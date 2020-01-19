@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <bean class="com.lukasgregori.idoc2impex.routes.MATMAS05Route"/>
+
+    <bean id="dozerConverterLoader" class="org.apache.camel.converter.dozer.DozerTypeConverterLoader">
+        <constructor-arg index="0" ref="idoc2ImpexCamelContext"/>
+        <constructor-arg index="1" ref="mapperConfiguration"/>
+    </bean>
+
+    <bean id="mapperConfiguration" class="org.apache.camel.converter.dozer.DozerBeanMapperConfiguration">
+        <property name="mappingFiles">
+            <list>
+                <value>mapping.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <camelContext id="idoc2ImpexCamelContext" xmlns="http://camel.apache.org/schema/spring">
+        <route>
+            <from uri="file://data/input"/>
+            <to uri="direct:processInput"/>
+            <to uri="file://data/output/archive"/>
+        </route>
+        <route>
+            <from uri="direct:processInput"/>
+            <choice>
+                <when>
+                    <xpath>//IDOCTYP = 'MATMAS05'</xpath>
+                    <to uri="direct:processMATMAS05"/>
+                </when>
+                <otherwise>
+                    <log message="Unknown Idoc Type, unable to process ${file:name}"
+                         logName="com.lukasgregori.idoc2impex.processInput"/>
+                    <to uri="file://data/output/error"/>
+                </otherwise>
+            </choice>
+        </route>
+        <route>
+            <from uri="direct:exportCSVToFile"/>
+            <to uri="file://data/output/processed?fileName=${file:onlyname.noext}.impex"/>
+        </route>
+    </camelContext>
+
+</beans>

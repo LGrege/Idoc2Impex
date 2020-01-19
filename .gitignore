@@ -1,0 +1,2 @@
+# Ignore auto generated jaxb classes (see idoc-definitions.xsd)
+**/src/main/java/com/lukasgregori/idoc2impex/types/raw/

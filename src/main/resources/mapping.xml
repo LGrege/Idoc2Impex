@@ -1,0 +1,19 @@
+<mappings xmlns="http://dozermapper.github.io/schema/bean-mapping"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozermapper.github.io/schema/bean-mapping http://dozermapper.github.io/schema/bean-mapping.xsd">
+
+    <!-- MATMAS05 to ProductModel -->
+    <mapping>
+        <class-a>com.lukasgregori.idoc2impex.types.raw.E1MARAM</class-a>
+        <class-b>com.lukasgregori.idoc2impex.types.target.ProductModel</class-b>
+        <field>
+            <a>matnr</a>
+            <b>code</b>
+        </field>
+        <field>
+            <a>meins</a>
+            <b>unit</b>
+        </field>
+    </mapping>
+
+</mappings>
