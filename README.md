@@ -18,7 +18,7 @@ are generated using xjc based on the `idoc-definitions.xsd` file.
 </xs:complexType>
 ```
 By running the `xsdtojava` maven target (`mvn org.apache.cxf:cxf-xjc-plugin:3.3.0:xsdtojava`), 
-the provided xsd file is used to generated java classes.
+the provided xsd file is used to generate java classes.
 The resulting jaxb annotated classes can then be used to parse the idocs in the first step of the camel route
 
 ```java
@@ -76,6 +76,20 @@ The attribute based mapping can be found within the `mapping.xml` file.
 ```
 
 #### Results
+
+To transform an Idoc to Impex, it needs to be placed within the input directory. Once the application
+is started, the file will be either moved to the `archive` or `error` directory, dependent if the Idoc
+could be successfully transformed or not.
+
+```
+├── input
+└── output
+    ├── archive
+    │   └── baseProduct_MATMAS.xml
+    ├── error
+    └── processed
+        └── baseProduct_MATMAS.impex
+```
 
 The resulting Impex can be seen below. All mapped fields are put into the Impex
 as specified by the annotations in the target files.
